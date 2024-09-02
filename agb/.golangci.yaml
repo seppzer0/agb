@@ -1,0 +1,18 @@
+run:
+  tests: false
+output:
+  formats:
+  - format: colored-line-number
+  - format: checkstyle
+    path: lint_report.json
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - typecheck
+    - unused
+    - cyclop
+    - gofmt
+    - lll
