@@ -124,9 +124,9 @@ func (rm *ResourceManager) GetSource(av int, lkv float64, pv string) error {
 			}
 
 			for _, cmd := range cmds {
-				err := tool.RunCmdWDirVerbose(cmd, rm.directoryConfig.KernelSourcePath)
+				out, err := tool.RunCmdWDir(cmd, rm.directoryConfig.KernelSourcePath)
 				if err != nil {
-					return cerror.ErrCommandRun{Command: cmd, Output: ""}
+					return cerror.ErrCommandRun{Command: cmd, Output: out}
 				}
 			}
 		} else {
