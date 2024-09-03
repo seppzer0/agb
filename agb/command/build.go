@@ -62,9 +62,9 @@ func (bc *BuildCommand) Execute() error {
 		return err
 	}
 
-	//if err := kernel_builder.Build(); err != nil {
-	//	return err
-	//}
+	if err := kernel_builder.Build(); err != nil {
+		return err
+	}
 
 	return nil
 }

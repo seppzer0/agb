@@ -138,3 +138,8 @@ func (rm *ResourceManager) GetSource(av int, lkv float64, pv string) error {
 	tool.Mdone()
 	return nil
 }
+
+// CleanKernelSource cleans the directory with kernel sources from potential artifacts.
+func (rm *ResourceManager) CleanKernelSource() error {
+	return rm.gitManager.Reset(rm.directoryConfig.KernelSourcePath)
+}
