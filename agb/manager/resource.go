@@ -130,8 +130,9 @@ func (rm *ResourceManager) GetSource(av int, lkv float64, pv string) error {
 				}
 			}
 		} else {
-			// TODO: implement custom git repository download
-			return nil
+			if err := rm.gitManager.Clone(rm.SourceLocation, rm.directoryConfig.KernelSourcePath, true); err != nil {
+				return err
+			}
 		}
 	}
 
