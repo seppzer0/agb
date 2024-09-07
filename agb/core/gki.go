@@ -73,9 +73,16 @@ func (gb *GkiBuilder) Patch() error {
 
 // Prepare runs all the preparations for the build.
 func (gb *GkiBuilder) Prepare() error {
-	//if err := gb.resourceManager.GetCompiler(); err != nil {
-	//	return err
-	//}
+	// for regular GKI sources, separate Clang is not required
+	if !(gb.LinuxKernelVersion >= 5.10) {
+		if err := gb.resourceManager.GetCompiler(); err != nil {
+			return err
+		}
+	}
+
+	if err := gb.resourceManager.CleanKernelSource(); err != nil {
+		return err
+	}
 
 	if err := gb.resourceManager.GetSource(gb.AndroidVersion, gb.LinuxKernelVersion, gb.PatchVersion); err != nil {
 		return err
@@ -90,8 +97,13 @@ func (gb *GkiBuilder) Prepare() error {
 
 // Build launches GKI kernel build.
 func (gb *GkiBuilder) Build() error {
-	//cmd := "LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC=\"clang\""
-	cmd := "tools/bazel run --disk_cache=~/.cache/bazel --config=fast --config=stamp --lto=thin //common:kernel_aarch64_dist -- --dist_dir=dist"
+	var cmd string
+
+	if gb.AndroidVersion >= 14 {
+		cmd = "tools/bazel run --disk_cache=~/.cache/bazel --config=fast --config=stamp --lto=thin //common:kernel_aarch64_dist -- --dist_dir=dist"
+	} else {
+		cmd = "LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC=\"clang\""
+	}
 
 	out, err := tool.RunCmd(cmd)
 	if err != nil {

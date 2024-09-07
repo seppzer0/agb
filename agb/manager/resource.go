@@ -23,16 +23,12 @@ type ResourceManager struct {
 
 // NewResourceManager creates new instance of ResourceManager.
 func NewResourceManager(cu string, sloc string) *ResourceManager {
-	dc := config.NewDirectoryConfig()
-	gm := NewGitManager()
-	fm := NewFileManager()
-
 	return &ResourceManager{
 		ClangUrl:        cu,
 		SourceLocation:  sloc,
-		directoryConfig: dc,
-		gitManager:      gm,
-		fileManager:     fm,
+		directoryConfig: config.NewDirectoryConfig(),
+		gitManager:      NewGitManager(),
+		fileManager:     NewFileManager(),
 	}
 }
 
@@ -124,17 +120,23 @@ func (rm *ResourceManager) GetSource(av int, lkv float64, pv string) error {
 			}
 
 			for _, cmd := range cmds {
-				err := tool.RunCmdWDirVerbose(cmd, rm.directoryConfig.KernelSourcePath)
+				out, err := tool.RunCmdWDir(cmd, rm.directoryConfig.KernelSourcePath)
 				if err != nil {
-					return cerror.ErrCommandRun{Command: cmd, Output: ""}
+					return cerror.ErrCommandRun{Command: cmd, Output: out}
 				}
 			}
 		} else {
-			// TODO: implement custom git repository download
-			return nil
+			if err := rm.gitManager.Clone(rm.SourceLocation, rm.directoryConfig.KernelSourcePath, true); err != nil {
+				return err
+			}
 		}
 	}
 
 	tool.Mdone()
 	return nil
+}
+
+// CleanKernelSource cleans the directory with kernel sources from potential artifacts.
+func (rm *ResourceManager) CleanKernelSource() error {
+	return rm.gitManager.Reset(rm.directoryConfig.KernelSourcePath)
 }

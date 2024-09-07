@@ -25,8 +25,8 @@ func (gm *GitManager) Clone(url string, path string, shallow bool) error {
 
 	command := fmt.Sprintf("git clone%s %s %s", depth_flag, url, path)
 
-	if _, err := tool.RunCmd(command); err != nil {
-		return cerror.ErrCommandRun{Command: command}
+	if out, err := tool.RunCmd(command); err != nil {
+		return cerror.ErrCommandRun{Command: command, Output: out}
 	}
 
 	return nil
