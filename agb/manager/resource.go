@@ -23,16 +23,12 @@ type ResourceManager struct {
 
 // NewResourceManager creates new instance of ResourceManager.
 func NewResourceManager(cu string, sloc string) *ResourceManager {
-	dc := config.NewDirectoryConfig()
-	gm := NewGitManager()
-	fm := NewFileManager()
-
 	return &ResourceManager{
 		ClangUrl:        cu,
 		SourceLocation:  sloc,
-		directoryConfig: dc,
-		gitManager:      gm,
-		fileManager:     fm,
+		directoryConfig: config.NewDirectoryConfig(),
+		gitManager:      NewGitManager(),
+		fileManager:     NewFileManager(),
 	}
 }
 
