@@ -7,7 +7,7 @@ import (
 
 // BuildCommand is a representation of "build" command.
 type BuildCommand struct {
-	LinuxKernelVersion float64
+	LinuxKernelVersion string
 	AndroidVersion     int
 	PatchVersion       string
 	DefconfigPath      string
@@ -19,7 +19,7 @@ type BuildCommand struct {
 
 // NewBuildCommand creates new instance of BuildCommand.
 func NewBuildCommand(
-	lkv float64,
+	lkv string,
 	av int,
 	pv string,
 	dp string,

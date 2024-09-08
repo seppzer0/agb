@@ -12,7 +12,7 @@ import (
 // newBuildCmd registers the "build" command.
 func newBuildCmd() *cobra.Command {
 	var (
-		linuxKernelVersion float64
+		linuxKernelVersion string
 		androidVersion     int
 		patchVersion       string
 		defconfigPath      string
@@ -54,7 +54,7 @@ func newBuildCmd() *cobra.Command {
 	}
 
 	flags := command.Flags()
-	flags.Float64VarP(
+	flags.stringVarP(
 		&linuxKernelVersion,
 		"linux-kernel-version",
 		"l",

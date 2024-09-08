@@ -83,7 +83,7 @@ func (rm *ResourceManager) GetCompiler() error {
 }
 
 // GetSource downloads kernel source.
-func (rm *ResourceManager) GetSource(av int, lkv float64, pv string) error {
+func (rm *ResourceManager) GetSource(av int, lkv string, pv string) error {
 	if _, err := tool.RunCmd("repo --version"); err != nil {
 		return cerror.ErrGeneric{Message: "repo tool not installed."}
 	}
@@ -97,14 +97,14 @@ func (rm *ResourceManager) GetSource(av int, lkv float64, pv string) error {
 		// Google's GKI source is addressed if no custom URL is specified
 		if rm.SourceLocation == "" {
 			cmd_repo := fmt.Sprintf(
-				"repo init --depth=1 --u https://android.googlesource.com/kernel/manifest -b common-android%d-%.1f --repo-rev=v2.16",
+				"repo init --depth=1 --u https://android.googlesource.com/kernel/manifest -b common-android%d-%s --repo-rev=v2.16",
 				av, lkv,
 			)
 			if pv != "" {
 				cmd_repo = strings.Replace(
 					cmd_repo,
-					fmt.Sprintf("common-android%d-%.1f", av, lkv),
-					fmt.Sprintf("common-android%d-%.1f-%s", av, lkv, pv),
+					fmt.Sprintf("common-android%d-%s", av, lkv),
+					fmt.Sprintf("common-android%d-%s-%s", av, lkv, pv),
 					1,
 				)
 			}

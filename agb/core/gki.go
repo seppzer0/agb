@@ -8,7 +8,7 @@ import (
 
 // GkiBuilder is a core module responsible for building GKI.
 type GkiBuilder struct {
-	LinuxKernelVersion float64
+	LinuxKernelVersion string
 	AndroidVersion     int
 	PatchVersion       string
 	DefconfigPath      string
@@ -20,7 +20,7 @@ type GkiBuilder struct {
 
 // NewGkiBuilder creates new instance of GkiBuilder.
 func NewGkiBuilder(
-	lkv float64,
+	lkv string,
 	av int,
 	pv string,
 	dp string,
@@ -62,7 +62,7 @@ func (gb *GkiBuilder) addKsu() error {
 }
 
 // determineKernelVersion determines Linux kernel version directly from sources.
-func (gb *GkiBuilder) determineKernelVersion() float64 {
+func (gb *GkiBuilder) determineKernelVersion() string {
 	return 3.14
 }
 
