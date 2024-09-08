@@ -54,11 +54,11 @@ func newBuildCmd() *cobra.Command {
 	}
 
 	flags := command.Flags()
-	flags.stringVarP(
+	flags.StringVarP(
 		&linuxKernelVersion,
 		"linux-kernel-version",
 		"l",
-		0,
+		"",
 		"Linux kernel version number (required)",
 	)
 	flags.IntVarP(
