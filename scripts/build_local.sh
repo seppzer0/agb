@@ -5,10 +5,10 @@ set -e
 ROOT_DIR=$(dirname $(dirname $(realpath "$0")))
 BUILD_DIR=${ROOT_DIR}/build
 
-VERSION=$(bash $ROOT_DIR/scripts/get_version.sh)
+APP_VERSION=$(bash $ROOT_DIR/scripts/get_version.sh)
 GO_VERSION=$(go version)
 PREFIX="agb/config"
-LDFLAGS="-X '$PREFIX.appVersion=$VERSION' -X '$PREFIX.goVersion=$GO_VERSION'"
+LDFLAGS="-X '$PREFIX.appVersion=$APP_VERSION' -X '$PREFIX.goVersion=$GO_VERSION'"
 
 mkdir -p "${BUILD_DIR}"
 cd "${ROOT_DIR}"/agb

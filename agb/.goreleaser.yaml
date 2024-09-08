@@ -17,6 +17,10 @@ builds:
   - id: "agb"
     main: ./cmd/agb
     binary: agb
+    flags:
+      - -o=./build
+    ldflags:
+      - -X 'agb/config.appVersion={{ .Env.APP_VERSION }}' -X 'agb/config.goVersion={{ .Env.GO_VERSION }}'
     env:
       - CGO_ENABLED=0
     goos:
@@ -32,8 +36,8 @@ archives:
     format: zip
     builds:
       - "agb"
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    wrap_in_directory: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "{{ .ProjectName }}_{{ .Env.APP_VERSION }}_{{ .Os }}_{{ .Arch }}"
+    wrap_in_directory: "{{ .ProjectName }}_{{ .Env.APP_VERSION }}_{{ .Os }}_{{ .Arch }}"
     files:
       - docs/
       - scripts/
