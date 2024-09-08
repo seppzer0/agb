@@ -13,7 +13,7 @@ func NewVersionCommand() *VersionCommand {
 	return &VersionCommand{}
 }
 
-// Execute runs "build" command's logic.
+// Execute runs "version" command's logic.
 func (vc *VersionCommand) Execute() error {
 	version_config := config.NewVersionConfig()
 	app_version, go_version := version_config.AppVersion, version_config.GoVersion
