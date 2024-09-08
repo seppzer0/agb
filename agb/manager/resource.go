@@ -1,8 +1,11 @@
 package manager
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -136,7 +139,85 @@ func (rm *ResourceManager) GetSource(av int, lkv string, pv string) error {
 	return nil
 }
 
-// CleanKernelSource cleans the directory with kernel sources from potential artifacts.
-func (rm *ResourceManager) CleanKernelSource() error {
-	return rm.gitManager.Reset(rm.directoryConfig.KernelSourcePath)
+// CleanArtifacts cleans the directory with kernel sources from potential artifacts.
+func (rm *ResourceManager) CleanArtifacts() error {
+	paths := [2]string{
+		rm.directoryConfig.KernelSourcePath,
+		rm.directoryConfig.Anykernel3Path,
+	}
+
+	for p := range paths {
+		tool.Mnote(fmt.Sprintf("Pseudo-cleaning %s..", paths[p]))
+		tool.Mdone()
+	}
+
+	//return rm.gitManager.Reset(rm.directoryConfig.KernelSourcePath)
+	return nil
+}
+
+// getRepoVersion extracts repo version in a specific way because of how weird it is.
+func (rm *ResourceManager) getRepoVersion() (string, error) {
+	args := strings.Fields("repo --version")
+	cmd := exec.Command(args[0], args[1:]...)
+
+	output, err := cmd.Output()
+	if err != nil {
+		return "", err
+	}
+
+	reader := bytes.NewReader(output)
+	scanner := bufio.NewScanner(reader)
+
+	lineNumber := 0
+	var secondLine string
+
+	for scanner.Scan() {
+		lineNumber++
+		if lineNumber == 2 {
+			secondLine = scanner.Text()
+			break
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Error reading output:", err)
+		return "", err
+	}
+
+	if secondLine != "" {
+		return secondLine, err
+	} else {
+		return "", cerror.ErrGeneric{Message: "Something wrong with repo --version command"}
+	}
+}
+
+// ValidateEnv checks for required tools in the environment.
+func (rm *ResourceManager) ValidateEnv(clang_included bool) error {
+	git_version, err := tool.RunCmdQuiet("git --version")
+	if err != nil {
+		return err
+	}
+	repo_version, err := rm.getRepoVersion()
+	if err != nil {
+		return err
+	}
+
+	versions := map[string]string{
+		"git":  git_version,
+		"repo": repo_version,
+	}
+
+	if clang_included {
+		clang_version, err := tool.RunCmdQuiet(fmt.Sprintf("%s --version", filepath.Join(rm.directoryConfig.ClangPath, "bin")))
+		if err != nil {
+			return err
+		}
+		versions["clang"] = clang_version
+	}
+
+	for v := range versions {
+		tool.Mnote(fmt.Sprintf("Detected %s version: %s", v, versions[v]))
+	}
+
+	return nil
 }

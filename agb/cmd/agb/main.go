@@ -94,7 +94,7 @@ func newBuildCmd() *cobra.Command {
 		"clang-url",
 		"c",
 		"https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/eed2fff8b93ce059eea7ccd8fc5eee37f8adb432/clang-r458507.tar.gz",
-		"path to a Clang pre-build zip",
+		"URL to a prebuilt Clang",
 	)
 	flags.StringVarP(
 		&sourceLocation,
