@@ -17,7 +17,7 @@ type BuildCommand struct {
 	KernelSu           bool
 }
 
-// Create new instance of BuildCommand.
+// NewBuildCommand creates new instance of BuildCommand.
 func NewBuildCommand(
 	lkv float64,
 	av int,

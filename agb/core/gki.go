@@ -18,7 +18,7 @@ type GkiBuilder struct {
 	resourceManager    *manager.ResourceManager
 }
 
-// NewGkiBuilder creates a new instance of GkiBuilder.
+// NewGkiBuilder creates new instance of GkiBuilder.
 func NewGkiBuilder(
 	lkv float64,
 	av int,
