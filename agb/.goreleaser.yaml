@@ -5,14 +5,6 @@ before:
     - go mod tidy
     - go mod download
 
-upx:
-  - enabled: true
-    compress: best
-    lzma: true
-    # TODO: delete this string when upx fix segfault
-    # https://github.com/upx/upx/issues/612
-    goos: [linux, windows]
-
 builds:
   - id: "agb"
     main: ./cmd/agb
@@ -44,3 +36,6 @@ archives:
       - Dockerfile
       - LICENSE.md
       - README.md
+
+release:
+  draft: true
