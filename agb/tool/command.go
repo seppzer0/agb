@@ -9,16 +9,16 @@ import (
 	"sync"
 )
 
-// RunCmd executes a specified shell command.
+// RunCmd executes shell command.
 func RunCmd(command string) (string, error) {
 	args := strings.Fields(command)
 	cmd := exec.Command(args[0], args[1:]...)
 
 	out, err := cmd.StdoutPipe()
-	cmd.Stderr = cmd.Stdout
 	if err != nil {
 		return "", err
 	}
+	cmd.Stderr = cmd.Stdout
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -46,17 +46,17 @@ func RunCmd(command string) (string, error) {
 	return strings.TrimSpace(string(fout)), cmd.Wait()
 }
 
-// RunCmdWDir executes a specified shell command in a specified working directory.
+// RunCmdWDir executes shell command in specified directory.
 func RunCmdWDir(command string, path string) (string, error) {
 	args := strings.Fields(command)
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Dir = path
 
 	out, err := cmd.StdoutPipe()
-	cmd.Stderr = cmd.Stdout
 	if err != nil {
 		return "", err
 	}
+	cmd.Stderr = cmd.Stdout
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -82,4 +82,31 @@ func RunCmdWDir(command string, path string) (string, error) {
 	}
 
 	return strings.TrimSpace(string(fout)), cmd.Wait()
+}
+
+// RunCmdQuiet executes shell command without printing it.
+func RunCmdQuiet(command string) (string, error) {
+	args := strings.Fields(command)
+	cmd := exec.Command(args[0], args[1:]...)
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+
+	return strings.TrimSpace(string(out)), nil
+}
+
+// RunCmdWDirQuiet executes shell command in specified directory without printing it.
+func RunCmdWDirQuiet(command string, path string) (string, error) {
+	args := strings.Fields(command)
+	cmd := exec.Command(args[0], args[1:]...)
+	cmd.Dir = path
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+
+	return strings.TrimSpace(string(out)), nil
 }

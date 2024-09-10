@@ -34,7 +34,13 @@ func (gm *GitManager) Clone(url string, path string, shallow bool) error {
 
 // Reset hard resets the state of the cloned git repository.
 func (gm *GitManager) Reset(path string) error {
-	_, err := tool.RunCmdWDir("git clean -fdx && git reset --hard", path)
+	if _, err := tool.RunCmdWDir("git clean -fdx", path); err != nil {
+		return err
+	}
 
-	return err
+	if _, err := tool.RunCmdWDir("git reset --soft", path); err != nil {
+		return err
+	}
+
+	return nil
 }

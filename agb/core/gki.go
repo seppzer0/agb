@@ -4,11 +4,12 @@ import (
 	cerror "agb/error"
 	"agb/manager"
 	"agb/tool"
+	"strconv"
 )
 
 // GkiBuilder is a core module responsible for building GKI.
 type GkiBuilder struct {
-	LinuxKernelVersion float64
+	LinuxKernelVersion string
 	AndroidVersion     int
 	PatchVersion       string
 	DefconfigPath      string
@@ -18,9 +19,9 @@ type GkiBuilder struct {
 	resourceManager    *manager.ResourceManager
 }
 
-// NewGkiBuilder creates a new instance of GkiBuilder.
+// NewGkiBuilder creates new instance of GkiBuilder.
 func NewGkiBuilder(
-	lkv float64,
+	lkv string,
 	av int,
 	pv string,
 	dp string,
@@ -41,56 +42,40 @@ func NewGkiBuilder(
 	}
 }
 
-// validateEnd checks that everything necessary is present in build environment.
-func (gb *GkiBuilder) validateEnv() bool {
-	return true
-}
-
-// CleanEnvironment resets the build environment.
-func (gb *GkiBuilder) CleanEnvironment() error {
-	return nil
-}
-
-// patchAnyKernel3 patches AnyKernel3's files to package the kernel image.
-func (gb *GkiBuilder) patchAnykernel3() error {
-	return nil
-}
-
 // AddKsu introduces KernelSU support into the kernel (GKI mode).
 func (gb *GkiBuilder) addKsu() error {
 	return nil
 }
 
-// determineKernelVersion determines Linux kernel version directly from sources.
-func (gb *GkiBuilder) determineKernelVersion() float64 {
-	return 3.14
-}
-
-// Patch applies all necessary modifications for the kernel build.
-func (gb *GkiBuilder) Patch() error {
-	return nil
-}
-
 // Prepare runs all the preparations for the build.
 func (gb *GkiBuilder) Prepare() error {
+	// by default, assume that Clang is not required
+	clang_required := false
+
+	lkv_float, err := strconv.ParseFloat(gb.LinuxKernelVersion, 32)
+	if err != nil {
+		return cerror.ErrGeneric{Message: "Could not convert kernel version to float"}
+	}
+
 	// for regular GKI sources, separate Clang is not required
-	if !(gb.LinuxKernelVersion >= 5.10) {
+	if !(lkv_float >= 5.10) {
+		clang_required = true
 		if err := gb.resourceManager.GetCompiler(); err != nil {
 			return err
 		}
 	}
 
-	if err := gb.resourceManager.CleanKernelSource(); err != nil {
+	if err := gb.resourceManager.ValidateEnv(clang_required); err != nil {
+		return err
+	}
+
+	if err := gb.resourceManager.CleanArtifacts(); err != nil {
 		return err
 	}
 
 	if err := gb.resourceManager.GetSource(gb.AndroidVersion, gb.LinuxKernelVersion, gb.PatchVersion); err != nil {
 		return err
 	}
-
-	//if gb.determineKernelVersion() != gb.LinuxKernelVersion {
-	//	return cerror.ErrGeneric{Message: "Specified Linux Kernel version does not match the actual one."}
-	//}
 
 	return nil
 }

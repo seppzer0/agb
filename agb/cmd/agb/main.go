@@ -12,7 +12,7 @@ import (
 // newBuildCmd registers the "build" command.
 func newBuildCmd() *cobra.Command {
 	var (
-		linuxKernelVersion float64
+		linuxKernelVersion string
 		androidVersion     int
 		patchVersion       string
 		defconfigPath      string
@@ -54,11 +54,11 @@ func newBuildCmd() *cobra.Command {
 	}
 
 	flags := command.Flags()
-	flags.Float64VarP(
+	flags.StringVarP(
 		&linuxKernelVersion,
 		"linux-kernel-version",
 		"l",
-		0,
+		"",
 		"Linux kernel version number (required)",
 	)
 	flags.IntVarP(
@@ -94,7 +94,7 @@ func newBuildCmd() *cobra.Command {
 		"clang-url",
 		"c",
 		"https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/eed2fff8b93ce059eea7ccd8fc5eee37f8adb432/clang-r458507.tar.gz",
-		"path to a Clang pre-build zip",
+		"URL to a prebuilt Clang",
 	)
 	flags.StringVarP(
 		&sourceLocation,
@@ -134,6 +134,20 @@ func newCleanCmd() *cobra.Command {
 	}
 }
 
+// newVersionCmd registers the "version" command.
+func newVersionCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "version",
+		Short: "Show version information.",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			command_obj := command.NewVersionCommand()
+
+			res := command_obj.Execute()
+			return res
+		},
+	}
+}
+
 func main() {
 	rootCmd := &cobra.Command{
 		Use:   "agb",
@@ -141,6 +155,7 @@ func main() {
 	}
 
 	rootCmd.AddCommand(newBuildCmd())
+	rootCmd.AddCommand(newVersionCmd())
 	rootCmd.AddCommand(newCleanCmd())
 
 	rootCmd.Execute()
