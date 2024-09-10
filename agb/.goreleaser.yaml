@@ -37,6 +37,5 @@ release:
     name: agb
   ids:
     - agb
-  draft: true
   prerelease: auto
   name_template: "{{.Env.APP_VERSION}}"
