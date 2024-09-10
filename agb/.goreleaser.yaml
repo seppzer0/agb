@@ -30,12 +30,6 @@ archives:
       - "agb"
     name_template: "{{ .ProjectName }}_{{ .Env.APP_VERSION }}_{{ .Os }}_{{ .Arch }}"
     wrap_in_directory: "{{ .ProjectName }}_{{ .Env.APP_VERSION }}_{{ .Os }}_{{ .Arch }}"
-    files:
-      - docs/
-      - scripts/
-      - Dockerfile
-      - LICENSE.md
-      - README.md
 
 release:
   draft: true
