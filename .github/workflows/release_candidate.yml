@@ -30,5 +30,6 @@ jobs:
         with:
           version: latest
           args: release --clean --snapshot
+          workdir: agb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
