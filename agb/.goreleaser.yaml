@@ -32,4 +32,11 @@ archives:
     wrap_in_directory: "{{ .ProjectName }}_{{ .Env.APP_VERSION }}_{{ .Os }}_{{ .Arch }}"
 
 release:
+  github:
+    owner: seppzer0
+    name: agb
+  ids:
+    - agb
   draft: true
+  prerelease: auto
+  name_template: "{{.Env.APP_VERSION}}"
