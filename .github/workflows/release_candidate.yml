@@ -33,3 +33,12 @@ jobs:
           workdir: agb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish RC Builds
+        uses: ncipollo/release-action@v1
+        with:
+          draft: true
+          skipIfReleaseExists: true
+          prerelease: true
+          tag: ${{ env.APP_VERSION }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "dist/*.zip"
