@@ -90,7 +90,7 @@ func (gb *GkiBuilder) Build() error {
 		cmd = "LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC=\"clang\""
 	}
 
-	out, err := tool.RunCmd(cmd)
+	out, err := tool.RunCmdWDir(cmd, "kernel_source")
 	if err != nil {
 		return cerror.ErrCommandRun{Command: cmd, Output: out}
 	}

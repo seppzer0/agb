@@ -93,7 +93,7 @@ func newBuildCmd() *cobra.Command {
 		&clangUrl,
 		"clang-url",
 		"c",
-		"https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/eed2fff8b93ce059eea7ccd8fc5eee37f8adb432/clang-r458507.tar.gz",
+		"https://android.googlesource.com/platform/prebuilts/clang/host/darwin-universal/+/refs/heads/llvm-r450784",
 		"URL to a prebuilt Clang",
 	)
 	flags.StringVarP(

@@ -114,12 +114,12 @@ func (rm *ResourceManager) GetSource(av int, lkv string, pv string) error {
 
 			// NOTE: includes git config action to prevent repo from stalling;
 			//       see https://groups.google.com/g/repo-discuss/c/T_JouBm-vBU/m/Jg1SLlRs2t4J
-			procs, _ := tool.RunCmd("nproc --all")
+			//_, _ := tool.RunCmd("nproc --all")
 			cmds := []string{
 				"git config --global color.ui false",
 				cmd_repo,
 				"repo --version",
-				fmt.Sprintf("repo --trace sync -c -j%s --no-tags", procs),
+				fmt.Sprintf("repo --trace sync -c -j4 --no-tags"),
 			}
 
 			for _, cmd := range cmds {
