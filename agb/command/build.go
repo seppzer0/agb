@@ -27,7 +27,7 @@ func NewBuildCommand(
 	sloc string,
 	murl string,
 	ksu bool,
-) *BuildCommand {
+) Command {
 	return &BuildCommand{
 		LinuxKernelVersion: lkv,
 		AndroidVersion:     av,
@@ -42,11 +42,13 @@ func NewBuildCommand(
 
 // Execute runs "build" command's logic.
 func (bc *BuildCommand) Execute() error {
+	// TODO: Better do it as DI
 	resource_manager := manager.NewResourceManager(
 		bc.ClangUrl,
 		bc.SourceLocation,
 	)
 
+	// TODO: Better do it as DI
 	kernel_builder := core.NewGkiBuilder(
 		bc.LinuxKernelVersion,
 		bc.AndroidVersion,
@@ -59,6 +61,7 @@ func (bc *BuildCommand) Execute() error {
 	)
 
 	if err := kernel_builder.Prepare(); err != nil {
+		//return fmt.Errorf("%s returned: %v", logPrefix, err)
 		return err
 	}
 

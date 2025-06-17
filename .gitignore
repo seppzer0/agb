@@ -2,3 +2,8 @@
 /build
 agb/dist
 lint_report.json
+
+# artifacts
+clang*
+build
+

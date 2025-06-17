@@ -12,7 +12,7 @@ type VersionConfig struct {
 	GoVersion  string
 }
 
-// NewVersionConfig returns new instance of VersionConfig
+// NewVersionConfig returns new instance of VersionConfig.
 func NewVersionConfig() *VersionConfig {
 	return &VersionConfig{
 		AppVersion: appVersion,

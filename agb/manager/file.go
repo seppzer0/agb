@@ -84,7 +84,7 @@ func (fm *FileManager) Ucopy(path_s string, path_t string) error {
 // UnpackTarGz unpacks a .tar.gz file into specified path
 func (fm *FileManager) UnpackTarGz(path_s string, path_t string) error {
 
-	cmd := fmt.Sprintf("tar -xvzf %s -C %s --force-local", path_s, path_t)
+	cmd := fmt.Sprintf("tar -xvzf %s -C %s", path_s, path_t)
 
 	out, err := tool.RunCmd(cmd)
 	if err != nil {

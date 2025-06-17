@@ -9,7 +9,7 @@ import (
 type VersionCommand struct{}
 
 // NewVersionCommand creates new instance of VersionCommand
-func NewVersionCommand() *VersionCommand {
+func NewVersionCommand() Command {
 	return &VersionCommand{}
 }
 

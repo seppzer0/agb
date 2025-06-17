@@ -4,6 +4,10 @@ package command
 type CleanCommand struct{}
 
 // NewCleanCommand creates new instance of CleanCommand
-func NewCleanCommand() *CleanCommand {
+func NewCleanCommand() Command {
 	return &CleanCommand{}
+}
+
+func (cc *CleanCommand) Execute() error {
+	return nil
 }

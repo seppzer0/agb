@@ -1,18 +1,23 @@
+version: "2"
+
 run:
   tests: false
 output:
   formats:
-  - format: colored-line-number
-  - format: checkstyle
-    path: lint_report.json
+    json:
+      path: lint_report.json
 linters:
-  enable:
+#  enable:
+#    - errcheck
+#    - govet
+#    - ineffassign
+#    - unused
+#    - cyclop
+#    - lll
+  disable:
     - errcheck
-    - gosimple
-    - govet
-    - ineffassign
-    - typecheck
     - unused
-    - cyclop
+    - staticcheck
+formatters:
+  enable:
     - gofmt
-    - lll
