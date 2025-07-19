@@ -1,5 +1,5 @@
 package command
 
-type Command interface {
+type ICommand interface {
 	Execute() error
 }
