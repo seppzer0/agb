@@ -1,9 +1,6 @@
 name: Sample Kernel Build
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
         kernel_version:
