@@ -1,0 +1,38 @@
+name: Sample Kernel Build
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+        kernel_version:
+          description: "Select Android kernel version"
+          required: true
+          type: string
+        android_version:
+          description: "Select Android OS version"
+          required: true
+          type: string
+
+env:
+  KERNEL_VERSION: ${{ github.event.inputs.kernel_version }}
+  ANDROID_VERSION: ${{ github.event.inputs.android_version }}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch tags
+        run: git fetch --force --tags
+
+      - name: Run build
+        run: |
+          docker build . -t agb
+          docker run -i --rm agb bash -c "./agb build -a {{ env.ANDROID_VERSION }} -l {{ env.KERNEL_VERSION }}"
