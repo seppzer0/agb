@@ -1,12 +1,12 @@
 # base image
-FROM golang:1.24-alpine3.22 AS base
+FROM golang:1.25.1-alpine AS base
 ENV CGO_ENABLED=0
 WORKDIR /build
 COPY ./agb .
 RUN go mod download && go generate ./...
 
 # linter
-FROM golangci/golangci-lint:v2.1-alpine AS lint
+FROM golangci/golangci-lint:v2.5-alpine AS lint
 ENV CGO_ENABLED=0
 WORKDIR /src
 COPY --from=base /build .
