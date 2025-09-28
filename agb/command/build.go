@@ -27,7 +27,7 @@ func NewBuildCommand(
 	sloc string,
 	murl string,
 	ksu bool,
-) Command {
+) ICommand {
 	return &BuildCommand{
 		LinuxKernelVersion: lkv,
 		AndroidVersion:     av,

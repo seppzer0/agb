@@ -4,7 +4,7 @@ package command
 type CleanCommand struct{}
 
 // NewCleanCommand creates new instance of CleanCommand
-func NewCleanCommand() Command {
+func NewCleanCommand() ICommand {
 	return &CleanCommand{}
 }
 
